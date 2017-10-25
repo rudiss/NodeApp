@@ -1,34 +1,72 @@
-var express = require("express");
-var app = express();
-var bodyParser = require('body-parser');
+var express    = require("express"),
+    app        = express(),
+    bodyParser = require('body-parser'),
+    mongoose   = require("mongoose");
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine" , "ejs");
+mongoose.connect("mongodb://localhost/yelp_camp", {
+  useMongoClient: true
+});
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-app.get("/", function(req, res){
-  res.render("landing");
-})
-var campgrounds = [
-  {name: "Salmom Creek", image: "http://explorersgroup.in/web/wp-content/uploads/2014/03/Rajmachi-Kids-Camp-560x300.jpg" },
-  {name: "Salmom Creek2", image: "http://explorersgroup.in/web/wp-content/uploads/2014/03/Rajmachi-Kids-Camp-560x300.jpg" },
-  {name: "Salmom Creek3", image: "http://explorersgroup.in/web/wp-content/uploads/2014/03/Rajmachi-Kids-Camp-560x300.jpg" }
-]
+app.set("view engine", "ejs");
 
-app.get("/campgrounds", function(req, res){
+// SCHEMA SETUP
 
-  res.render("campgrounds", {campgrounds:campgrounds});
+var campgroundSchema = new mongoose.Schema({
+  name: String,
+  image: String
 });
 
-app.post("/campgrounds", function(req, res){
+var Campground = mongoose.model("Campground", campgroundSchema);
+//
+// Campground.create({
+//   name: "Salmom Creek",
+//   image: "http://explorersgroup.in/web/wp-content/uploads/2014/03/Rajmachi-Kids-Camp-560x300.jpg"
+// }, function(err, campground) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("NEWLY CREATED CAMPGROUND");
+//     console.log(campground);
+//   }
+// });
+
+app.get("/", function(req, res) {
+  res.render("landing");
+})
+
+//Index
+app.get("/campgrounds", function(req, res) {
+      Campground.find({}, function(err, campgrounds) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render("campgrounds", {campgrounds: campgrounds});
+        }
+      })
+});
+
+//Create
+app.post("/campgrounds", function(req, res) {
   //get data from form
   var name = req.body.name;
   var image = req.body.image;
-  var newCampgroud = {name: name, image:image};
-  campgrounds.push(newCampgroud);
-  res.redirect("/campgrounds");
+  var newCampgroud = {
+    name: name,
+    image: image
+  };
+  Campground.create(newCampgroud, function(err, newCreated) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/campgrounds");
+    }
+  })
 });
 
-app.get("/campgrounds/new", function(req, res){
+app.get("/campgrounds/new", function(req, res) {
   res.render("new")
 })
 
