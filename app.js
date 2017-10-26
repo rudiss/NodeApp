@@ -2,9 +2,12 @@ var express    = require("express"),
     app        = express(),
     bodyParser = require('body-parser'),
     mongoose   = require("mongoose"),
+    passport   = require("passport"),
+    LocalStategy = require("passport-local"),
     Campground = require("./models/campground"),
     Comment    = require("./models/comment"),
     seedDB     = require("./seeds");
+    User       = require("./models/user");
 
 mongoose.connect("mongodb://localhost/yelp_camp", {
   useMongoClient: true
@@ -16,7 +19,7 @@ app.set("view engine", "ejs");
 app.get("/", function(req, res) {
   res.render("landing");
 });
-app.use(express.static(__dirname + "/public")); //assets 
+app.use(express.static(__dirname + "/public")); //assets
 // seedDB();
 
 //Index
@@ -101,5 +104,5 @@ app.post("/campgrounds/:id/comments", function(req, res) {
   })
 })
 app.listen(3000, function() {
-  console.log('Server running on port:3000.');
+  console.log('Server running on port:3000...');
 });
