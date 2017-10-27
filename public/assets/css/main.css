@@ -5,3 +5,9 @@
 .caption-full {
   padding: 9px;
 }
+.dropdown-menu {
+  min-width: 0;
+}
+.card-img-top {
+  height: 300px;
+}
