@@ -4,7 +4,7 @@ var Campground =require("../models/campground");
 
 
 //Index
-router.get("/campgrounds", function(req, res) {
+router.get("/", function(req, res) {
   Campground.find({}, function(err, campgrounds) {
     if (err) {
       console.log(err);
@@ -17,12 +17,12 @@ router.get("/campgrounds", function(req, res) {
 });
 
 //NEW
-router.get("/campgrounds/new", function(req, res) {
+router.get("/new", function(req, res) {
   res.render("campgrounds/new")
 });
 
 //Create
-router.post("/campgrounds", function(req, res) {
+router.post("/", function(req, res) {
   //get data from form
   var name = req.body.name;
   var image = req.body.image;
@@ -42,7 +42,7 @@ router.post("/campgrounds", function(req, res) {
 });
 
 //SHOW
-router.get("/campgrounds/:id", function(req, res) {
+router.get("/:id", function(req, res) {
   Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground) {
     if (err) {
       console.log(err);
