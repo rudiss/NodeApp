@@ -11,3 +11,7 @@
 .card-img-top {
   height: 300px;
 }
+
+#delete-form {
+  display: inline;
+}

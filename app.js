@@ -4,6 +4,7 @@ var express = require("express"),
   mongoose = require("mongoose"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
+  methodOverride = require("method-override"),
   Campground = require("./models/campground"),
   Comment = require("./models/comment"),
   seedDB = require("./seeds");
@@ -24,6 +25,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public")); //assets
 // seedDB();
 
+app.use(methodOverride("_method"));
 //PASSPORT CONFIGURATUION
 app.use(require("express-session")({
   secret: "Olly and Theo!",
