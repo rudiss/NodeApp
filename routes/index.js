@@ -7,10 +7,12 @@ router.get("/", function(req, res) {
   res.render("landing");
 });
 //AUTH ROUTES
+
 //show register form
 router.get("/register", function(req, res) {
   res.render("register");
 });
+
 //POST
 router.post("/register", function(req, res) {
   var newUser = new User({
@@ -18,10 +20,11 @@ router.post("/register", function(req, res) {
   });
   User.register(newUser, req.body.password, function(err, user) {
     if (err) {
-      console.log(err);
+      req.flash("error", err.message);
       return res.render("register");
     }
     passport.authenticate("local")(req, res, function() {
+      req.flash("success", "Wellcome to NodeApp " + user.username);
       res.redirect("/campgrounds");
     });
   });
@@ -31,6 +34,7 @@ router.post("/register", function(req, res) {
 router.get("/login", function(req, res) {
   res.render("login");
 });
+
 //handling logic logic
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/campgrounds",
@@ -39,14 +43,8 @@ router.post("/login", passport.authenticate("local", {
 //logout ROUTES
 router.get("/logout", function(req, res){
   req.logout();
+  req.flash("success", "Logged you out!");
   res.redirect("/campgrounds");
 });
-
-function isLoggedIN(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect("/login");
-}
 
 module.exports = router;
