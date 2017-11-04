@@ -12,6 +12,6 @@
   height: 300px;
 }
 
-#delete-form {
+.delete-form {
   display: inline;
 }
