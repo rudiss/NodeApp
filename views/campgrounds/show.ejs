@@ -21,11 +21,11 @@
             <p><em>Submitted by <%= campground.author.username %></em>
             </p>
             <% if (currentUser && campground.author.id.equals(currentUser._id)){ %>
-            <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-sm btn-outline-warning">Edit</a>
-            <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
-            </form>
-            <% }%>
+              <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-sm btn-outline-warning">Edit</a>
+              <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+              <% }%>
           </div>
 
         </div>
@@ -43,11 +43,15 @@
                   <span class="float-right">10 days ago</span>
                   <p>
                     <%= comment.text %>
-                    <a class="btn btn-sm btn-outline-danger"
-                    href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a> <!-- change for icon -->
-                    <form class="delete-form"  action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                      <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete"/>
-                    </form>
+                    <% if (currentUser && comment.author.id.equals(currentUser._id)){ %>
+
+                      <a class="btn btn-sm btn-outline-danger" href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                      <!-- change for icon -->
+                      <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                        <input type="submit" class="btn btn-sm btn-outline-danger" value="Delete" />
+                      </form>
+                      <% }%>
+                      
                   </p>
 
                 </div>
